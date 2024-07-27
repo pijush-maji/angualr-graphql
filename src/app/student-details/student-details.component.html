@@ -1,0 +1,55 @@
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="loading then nodata else data"></ng-container>
+        </tbody>
+        
+    </table>
+    <hr style="color: red;"/>
+    <div>
+        <b>Now we'll try to get student by firstName</b>
+        <form class="form-inline" #searchForm="ngForm" (ngSubmit)="serachStudent()">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="firstName" class="sr-only">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="firstName">
+            </div>
+            <button class="btn btn-primary">Serach</button>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="foundFlag">
+                <td>{{foundStudent.firstName}}</td>
+                <td>{{foundStudent.lastName}}</td>
+                <td>{{foundStudent.email}}</td>
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+
+
+
+<ng-template #data>
+    <tr *ngFor="let student of allStudents">
+        <td>{{student.firstName}}</td>
+        <td>{{student.lastName}}</td>
+        <td>{{student.email}}</td>
+    </tr>
+</ng-template>
+
+<ng-template #nodata>
+    <p>Loading...</p>
+</ng-template>
