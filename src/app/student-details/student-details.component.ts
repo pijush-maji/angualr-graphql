@@ -18,6 +18,7 @@ export class StudentDetailsComponent implements OnInit {
   firstName!:string
   foundStudent!:Student
   foundFlag:boolean = false;
+  editFlag:boolean = false
 
   constructor(private apollo:Apollo){
 
@@ -41,6 +42,8 @@ export class StudentDetailsComponent implements OnInit {
   }
 
   serachStudent(){
+    this.foundFlag=false;
+    this.editFlag=false;
     console.log("Serchint...")
     this.apollo.watchQuery({
       query: gql`
@@ -62,6 +65,10 @@ export class StudentDetailsComponent implements OnInit {
       }
       console.log(this.foundStudent)
     })
+  }
+
+  editStudent(){
+    this.editFlag=true;
   }
 
 }

@@ -22,6 +22,10 @@
             </div>
             <button class="btn btn-primary">Serach</button>
         </form>
+        <span>
+            <button class="btn btn-primary" [hidden]="!foundFlag" style="float: right;"
+            (click)="editStudent()">Edit</button>
+        </span>
         <table class="table">
             <thead>
                 <tr>
@@ -31,9 +35,24 @@
                 </tr>
             </thead>
             <tbody *ngIf="foundFlag">
-                <td>{{foundStudent.firstName}}</td>
-                <td>{{foundStudent.lastName}}</td>
-                <td>{{foundStudent.email}}</td>
+                <td>
+                    <div class="input-group mb-3">
+                        <input [disabled]="!editFlag" type="text" class="form-control" [value]="foundStudent.firstName">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group mb-3">
+                        <input [disabled]="!editFlag" type="text" class="form-control" [value]="foundStudent.lastName">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group mb-3">
+                        <input [disabled]="!editFlag" type="text" class="form-control" [value]="foundStudent.email">
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-success" style="margin-top: 7px;" [hidden]="!editFlag">Save</button>
+                </td>
             </tbody>
             
         </table>
