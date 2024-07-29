@@ -18,7 +18,7 @@
         <form class="form-inline" #searchForm="ngForm" (ngSubmit)="serachStudent()">
             <div class="form-group mx-sm-3 mb-2">
                 <label for="firstName" class="sr-only">First Name</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="firstName">
+                <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="enteredName">
             </div>
             <button class="btn btn-primary">Serach</button>
         </form>
@@ -37,21 +37,26 @@
             <tbody *ngIf="foundFlag">
                 <td>
                     <div class="input-group mb-3">
-                        <input [disabled]="!editFlag" type="text" class="form-control" [value]="foundStudent.firstName">
+                        <input [disabled]="!editFlag" type="text" [(ngModel)]="firstName" class="form-control">
                     </div>
                 </td>
                 <td>
                     <div class="input-group mb-3">
-                        <input [disabled]="!editFlag" type="text" class="form-control" [value]="foundStudent.lastName">
+                        <input [disabled]="!editFlag" [(ngModel)]="lastName" type="text" class="form-control">
                     </div>
                 </td>
                 <td>
                     <div class="input-group mb-3">
-                        <input [disabled]="!editFlag" type="text" class="form-control" [value]="foundStudent.email">
+                        <input [disabled]="!editFlag" [(ngModel)]="email" type="text" class="form-control">
                     </div>
                 </td>
                 <td>
-                    <button class="btn btn-success" style="margin-top: 7px;" [hidden]="!editFlag">Save</button>
+                    <button class="btn btn-success" style="margin-top: 7px;" [hidden]="!editFlag" 
+                    (click)="updateStudent()">Save</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" style="margin-top: 7px;" [hidden]="!editFlag"
+                    (click)="cancelEdit()">Cancel</button>
                 </td>
             </tbody>
             

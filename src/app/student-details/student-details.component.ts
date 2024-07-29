@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Student } from '../model/models';
 import { NgFor, NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {  FormsModule } from '@angular/forms';
+import { UpdateStudentFnService } from '../service/update-student-fn.service';
 
 @Component({
   selector: 'app-student-details',
@@ -11,16 +12,20 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './student-details.component.html',
   styleUrl: './student-details.component.css'
 })
-export class StudentDetailsComponent implements OnInit {
+export class StudentDetailsComponent implements OnInit {  
 
   allStudents!:[Student];
   loading:boolean = true;
-  firstName!:string
+  enteredName!:string;
+  firstName!:string;
+  lastName!:string;
+  email!:string;
   foundStudent!:Student
   foundFlag:boolean = false;
   editFlag:boolean = false
 
-  constructor(private apollo:Apollo){
+  constructor(private apollo:Apollo,
+    private readonly updateStudentFN:UpdateStudentFnService){
 
   }
   ngOnInit(): void {
@@ -49,6 +54,7 @@ export class StudentDetailsComponent implements OnInit {
       query: gql`
       query GetStudentByName($firstName:String) {
         getStudentByName(firstName: $firstName) {
+            id
             firstName
             lastName
             email
@@ -56,12 +62,16 @@ export class StudentDetailsComponent implements OnInit {
     }
      `,
      variables:{
-      firstName:this.firstName
+      firstName:this.enteredName
      }
     }).valueChanges.subscribe((res:any)=>{
       this.foundStudent = res.data?.getStudentByName;
       if(this.foundStudent!=null && this.foundStudent!=undefined){
         this.foundFlag=!res.loading;
+        this.firstName=this.foundStudent.firstName;
+        this.lastName = this.foundStudent.lastName;
+        this.email = this.foundStudent.email;
+
       }
       console.log(this.foundStudent)
     })
@@ -69,6 +79,26 @@ export class StudentDetailsComponent implements OnInit {
 
   editStudent(){
     this.editFlag=true;
+  }
+
+  updateStudent(){
+    this.enteredName=this.firstName;
+    if(this.foundStudent.firstName !== this.firstName){
+      this.updateStudentFN.mutate({
+        id:this.foundStudent.id,
+        firstName:this.firstName
+      })
+      .subscribe(()=>{
+        
+        this.serachStudent();
+      })
+    }else{
+      this.editFlag=false;
+    }
+  }
+
+  cancelEdit(){
+    this.editFlag=false;
   }
 
 }
